@@ -1,0 +1,76 @@
+% Facts about symptoms
+symptom(fever).
+symptom(cough).
+symptom(shortness_of_breath).
+symptom(fatigue).
+symptom(headache).
+symptom(nausea).
+symptom(vomiting).
+symptom(diarrhea).
+symptom(sore_throat).
+symptom(runny_nose).
+symptom(muscle_pain).
+symptom(chills).
+symptom(rash).
+
+% Rules for diseases based on symptoms
+disease(covid_19) :-
+    has_symptom(fever),
+    has_symptom(cough),
+    has_symptom(shortness_of_breath),
+    has_symptom(fatigue).
+
+disease(flu) :-
+    has_symptom(fever),
+    has_symptom(cough),
+    has_symptom(headache),
+    has_symptom(muscle_pain).
+
+disease(common_cold) :-
+    has_symptom(cough),
+    has_symptom(sore_throat),
+    has_symptom(runny_nose).
+
+disease(stomach_flu) :-
+    has_symptom(nausea),
+    has_symptom(vomiting),
+    has_symptom(diarrhea),
+    has_symptom(fatigue).
+
+disease(malaria) :-
+    has_symptom(fever),
+    has_symptom(chills),
+    has_symptom(headache),
+    has_symptom(muscle_pain).
+
+disease(measles) :-
+    has_symptom(fever),
+    has_symptom(rash),
+    has_symptom(runny_nose),
+    has_symptom(sore_throat).
+
+% Example Queries
+% To check if someone has COVID-19 based on symptoms: disease(covid_19).
+% To find out what disease causes fever and cough: has_symptom(fever), has_symptom(cough), disease(X).
+
+% Dynamic predicates to store symptoms
+:- dynamic has_symptom/1.
+
+% Add symptoms for testing
+add_symptom(Symptom) :-
+    assertz(has_symptom(Symptom)).
+
+% Remove all symptoms (to reset for new diagnosis)
+clear_symptoms :-
+    retractall(has_symptom(_)).
+
+
+?- add_symptom(fever).
+?- add_symptom(cough).
+?- add_symptom(shortness_of_breath).
+?- add_symptom(fatigue).
+
+?- has_symptom(fever), has_symptom(cough), disease(X).
+X = covid_19 ;
+X = flu ;
+false.
